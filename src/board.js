@@ -70,7 +70,7 @@ class Board extends React.Component {
       for (let j=0; j<cards.length; j++) {
         cells.push(
           <td style={cellStyle} key={i*5 + j} onClick={() => this.onCardClick(i, j)}>
-            <img src={imgCard(cards[j])} width="60"/>
+            <img src={imgCard(cards[j])} alt={displayCard(cards[j])} width="60"/>
           </td>
         );
       }
@@ -87,13 +87,13 @@ class Board extends React.Component {
       if (i == 0) {
         cells.push(
           <td style={cellStyle} key={this.props.ctx.numPlayers*5 + i} onClick={() => this.onPileClick()}>
-            <img src={imgCard(pile[i])} width="60"/>
+            <img src={imgCard(pile[i])} alt={displayCard(pile[i])} width="60"/>
           </td>
         );
       } else {
         cells.push(
           <td style={cellStyle} key={this.props.ctx.numPlayers*5 + i}>
-            <img src={imgCard(pile[i])} width="60"/>
+            <img src={imgCard(pile[i])} alt={displayCard(pile[i])} width="60"/>
           </td>
         );
       }
