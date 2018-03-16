@@ -57,6 +57,21 @@ const Drop = Game({
   flow: {
     endGameIf: (G, ctx) => {
       if (G.dropped) {
+        // check if consecutive
+        let cards = G.players[ctx.currentPlayer];
+        if (cards.length == 5) {
+          let consecutive = true;
+          for(let x = 1; x < cards.length; x++) {
+            if (cards[x]%13 != cards[x-1]%13 + 1) {
+              consecutive = false;
+              break;
+            }
+          }
+          if (consecutive)
+            return ctx.currentPlayer;
+        }
+
+        // check least total
         let totals = Array(ctx.numPlayers).fill(0);
         for(let x = 0; x < ctx.numPlayers; x++) {
           totals[x] = G.players[x].map((val, _) => Math.min(val%13 + 1, 10)).reduce((a, b) => a + b, 0);
