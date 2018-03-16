@@ -19,7 +19,7 @@ function imgCard(cardNo) {
 
 class Board extends React.Component {
   canPlayCard(player, cardIdx) {
-    if (!this.props.isActive || this.props.ctx.turn != player) {
+    if (!this.props.isActive || Number(this.props.ctx.currentPlayer) != player) {
       return false;
     }
     let cardPlayed = this.props.G.cardPlayed;
