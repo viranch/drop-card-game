@@ -71,9 +71,7 @@ const Drop = Game({
     onTurnBegin: (G, ctx) => {
       let cardPlayed = null;
       let dropped = false;
-      let pile = [...G.pile];
-      if (pile.length > 1) pile.splice(0, 1);
-      return { ...G, pile, cardPlayed, dropped };
+      return { ...G, cardPlayed, dropped };
     },
 
     onTurnEnd: (G, ctx) => {
@@ -81,7 +79,8 @@ const Drop = Game({
       players[ctx.currentPlayer].sort((a, b) => a%13 - b%13);
       let cardCounts = [...G.cardCounts];
       cardCounts[ctx.currentPlayer] = players[ctx.currentPlayer].length;
-      return { ...G, players, cardCounts };
+      let pile = G.pile.length > 0 ? [G.pile[G.pile.length-1]] : [];
+      return { ...G, players, cardCounts, pile };
     }
   }
 });
