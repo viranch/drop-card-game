@@ -90,11 +90,12 @@ const Drop = Game({
 
     onTurnEnd: (G, ctx) => {
       let players = {...G.players};
-      players[ctx.currentPlayer].sort((a, b) => a%13 - b%13);
       let cardCounts = [...G.cardCounts];
+      let pile = [...G.pile];
+      players[ctx.currentPlayer].sort((a, b) => a%13 - b%13);
       cardCounts[ctx.currentPlayer] = players[ctx.currentPlayer].length;
-      let pile = G.pile.length > 0 ? [G.pile[G.pile.length-1]] : [];
-      return { ...G, players, cardCounts, pile };
+      let deck = pile.splice(0, pile.length-1).reverse().concat([...G.deck]);
+      return { ...G, players, cardCounts, pile, deck };
     }
   }
 });
