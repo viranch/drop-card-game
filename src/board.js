@@ -35,7 +35,7 @@ class Board extends React.Component {
   }
 
   canDrop() {
-    return this.props.isActive && !this.props.G.cardPlayed;
+    return this.props.isActive && !this.props.G.cardPlayed && this.props.ctx.turn >= this.props.ctx.numPlayers;
   }
 
   onCardClick(player, card) {
