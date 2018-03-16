@@ -25,11 +25,10 @@ const Drop = Game({
     playCard(G, ctx, cardIdx) {
       let pile = [...G.pile];
       let players = {...G.players};
-      let card = players[ctx.currentPlayer].splice(cardIdx, 1)[0];
+      let cardPlayed = players[ctx.currentPlayer].splice(cardIdx, 1)[0];
       let cardCounts = [...G.cardCounts];
       cardCounts[ctx.currentPlayer]--;
-      let cardPlayed = card;
-      pile.push(card);
+      pile.push(cardPlayed);
       return { ...G, players, cardCounts, pile, cardPlayed };
     },
 
