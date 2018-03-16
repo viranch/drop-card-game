@@ -18,8 +18,12 @@ function imgCard(cardNo) {
 }
 
 class Board extends React.Component {
-  canPlayCard(player, card) {
-    return this.props.isActive && this.props.ctx.turn == player;
+  canPlayCard(player, cardIdx) {
+    if (!this.props.isActive || this.props.ctx.turn != player) {
+      return false;
+    }
+    let cardPlayed = this.props.G.cardPlayed;
+    return cardPlayed === null || cardPlayed%13 == this.props.G.players[player][cardIdx]%13;
   }
 
   canDrawFromOpenPile() {
@@ -77,7 +81,7 @@ class Board extends React.Component {
         </td>
       );
       for (let j=0; j<cards.length; j++) {
-        let state = this.canPlayCard(i, cards[j]) ? 'clickable' : (cards[j] ? 'not-allowed' : null);
+        let state = this.canPlayCard(i, j) ? 'clickable' : (cards[j] ? 'not-allowed' : null);
         cells.push(
           <td className={state} key={cards[j]} onClick={() => this.onCardClick(i, j)}>
             <img src={imgCard(cards[j])} alt={displayCard(cards[j])} width="60"/>

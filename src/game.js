@@ -8,7 +8,7 @@ const Drop = Game({
   setup: (numPlayers) => {
     const G = {
       pile: [],
-      cardPlayed: false,
+      cardPlayed: null,
       dropped: false,
       deck: Random.Shuffle([...Array(52).keys()]),
       players: {},
@@ -25,10 +25,10 @@ const Drop = Game({
     playCard(G, ctx, cardIdx) {
       let pile = [...G.pile];
       let players = {...G.players};
-      let card = players[ctx.currentPlayer].splice(cardIdx, 1);
+      let card = players[ctx.currentPlayer].splice(cardIdx, 1)[0];
       let cardCounts = [...G.cardCounts];
       cardCounts[ctx.currentPlayer]--;
-      let cardPlayed = true;
+      let cardPlayed = card;
       pile.push(card);
       return { ...G, players, cardCounts, pile, cardPlayed };
     },
@@ -69,7 +69,7 @@ const Drop = Game({
     },
 
     onTurnBegin: (G, ctx) => {
-      let cardPlayed = false;
+      let cardPlayed = null;
       let dropped = false;
       let pile = [...G.pile];
       if (pile.length > 1) pile.splice(0, 1);
