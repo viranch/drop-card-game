@@ -3,6 +3,8 @@ import { Client } from 'boardgame.io/react';
 import Drop from './game';
 import Board from './board';
 
+import './client.css';
+
 const DropClient = Client({
   game: Drop,
   board: Board,
@@ -14,13 +16,9 @@ const DropClient = Client({
 class DropApp extends React.Component {
   render() {
     return (
-      <div style={{ padding: 50 }}>
+      <div className='client-container'>
         <h1>Drop</h1>
-        <div className="runner">
-          <div className="run">
-            <DropClient gameID={this.props.match.params.gameID} playerID={this.props.match.params.playerID} />
-          </div>
-        </div>
+        <DropClient gameID={this.props.match.params.gameID} playerID={this.props.match.params.playerID} />
       </div>
     );
   }
