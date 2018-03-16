@@ -1,5 +1,7 @@
 import React from 'react';
 
+import './board.css';
+
 function displayCard(cardNo) {
   let suits = ['♣', '♦', '♥', '♠'];
   let ranks = ['A', 2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K'];
@@ -16,28 +18,44 @@ function imgCard(cardNo) {
 }
 
 class Board extends React.Component {
+  canPlayCard(player, card) {
+    return this.props.isActive && this.props.ctx.turn == player;
+  }
+
+  canDrawFromOpenPile() {
+    return this.props.isActive && this.props.G.cardPlayed && this.props.G.pile.length > 1
+  }
+
+  canDrawFromClosedPile() {
+    return this.props.isActive && this.props.G.cardPlayed;
+  }
+
+  canDrop() {
+    return this.props.isActive && !this.props.G.cardPlayed;
+  }
+
   onCardClick(player, card) {
-    if (this.props.isActive && this.props.ctx.currentPlayer == player) {
+    if (this.canPlayCard(player, card)) {
       this.props.moves.playCard(card);
     }
   }
 
   onPileClick() {
-    if (this.props.isActive && this.props.G.cardPlayed && this.props.G.pile.length > 1) {
+    if (this.canDrawFromOpenPile()) {
       this.props.moves.pickFromPile();
       this.props.events.endTurn();
     }
   }
 
   onDrawClick() {
-    if (this.props.isActive && this.props.G.cardPlayed) {
+    if (this.canDrawFromClosedPile()) {
       this.props.moves.drawCard();
       this.props.events.endTurn();
     }
   }
 
   onDropClick() {
-    if (this.props.isActive && !this.props.G.cardPlayed) {
+    if (this.canDrop()) {
       this.props.moves.drop();
       this.props.events.endTurn();
     }
@@ -49,27 +67,19 @@ class Board extends React.Component {
       winner = <div>Player {Number(this.props.ctx.gameover) + 1} wins!</div>;
     }
 
-    const cellStyle = {
-      border: '1px solid #555',
-      width: '70px',
-      height: '50px',
-      lineHeight: '30px',
-      textAlign: 'center',
-      borderRadius: '10px',
-    };
-
     let tbody = [];
     for(let i = 0; i < this.props.ctx.numPlayers; i++) {
       let cells = [];
       let cards = this.props.G.players[i] || Array(this.props.G.cardCounts[i]);
       cells.push(
-        <td style={cellStyle} key={"Player"+i}>
+        <td key={"Player"+i}>
           Player {i+1}
         </td>
       );
       for (let j=0; j<cards.length; j++) {
+        let state = this.canPlayCard(i, cards[j]) ? 'clickable' : (cards[j] ? 'not-allowed' : null);
         cells.push(
-          <td style={cellStyle} key={i*5 + j} onClick={() => this.onCardClick(i, j)}>
+          <td className={state} key={cards[j]} onClick={() => this.onCardClick(i, j)}>
             <img src={imgCard(cards[j])} alt={displayCard(cards[j])} width="60"/>
           </td>
         );
@@ -80,31 +90,35 @@ class Board extends React.Component {
     // center pile
     let cells = [];
     cells.push(
-      <td key="Pile" style={cellStyle}>Pile</td>
+      <td key="Pile">Pile</td>
     );
     let pile = this.props.G.pile;
     for(let i = 0; i < pile.length; i++) {
       if (i == 0) {
         cells.push(
-          <td style={cellStyle} key={this.props.ctx.numPlayers*5 + i} onClick={() => this.onPileClick()}>
+          <td
+            className={this.canDrawFromOpenPile() ? 'clickable' : 'not-allowed'}
+            onClick={() => this.onPileClick()}
+            key={pile[i]}
+          >
             <img src={imgCard(pile[i])} alt={displayCard(pile[i])} width="60"/>
           </td>
         );
       } else {
         cells.push(
-          <td style={cellStyle} key={this.props.ctx.numPlayers*5 + i}>
+          <td className='not-allowed' key={pile[i]}>
             <img src={imgCard(pile[i])} alt={displayCard(pile[i])} width="60"/>
           </td>
         );
       }
     }
     cells.push(
-      <td style={cellStyle} key="Draw" onClick={() => this.onDrawClick()}>
+      <td className={this.canDrawFromClosedPile() ? 'clickable' : 'not-allowed'} key="Draw" onClick={() => this.onDrawClick()}>
         Draw
       </td>
     );
     cells.push(
-      <td style={cellStyle} key="Drop" onClick={() => this.onDropClick()}>
+      <td className={this.canDrop() ? 'clickable' : 'not-allowed'} key="Drop" onClick={() => this.onDropClick()}>
         Drop!
       </td>
     );
