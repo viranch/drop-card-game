@@ -9,7 +9,7 @@ const DropClient = Client({
   game: Drop,
   board: Board,
   debug: false,
-  multiplayer: true,
+  multiplayer: { server: '127.0.0.1:8000' },
   numPlayers: 2
 });
 

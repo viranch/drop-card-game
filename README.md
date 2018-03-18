@@ -1,4 +1,5 @@
 ```
 npm i
-npm run server
+yarn run server &
+yarn start
 ```
