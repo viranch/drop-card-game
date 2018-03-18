@@ -10,7 +10,7 @@ const DropClient = Client({
   board: Board,
   debug: false,
   multiplayer: true,
-  numPlayers: 4
+  numPlayers: 2
 });
 
 class DropApp extends React.Component {
