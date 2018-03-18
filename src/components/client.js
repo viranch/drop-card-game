@@ -1,6 +1,6 @@
 import React from 'react';
 import { Client } from 'boardgame.io/react';
-import Drop from './game';
+import Drop from '../game';
 import Board from './board';
 
 import './client.css';
