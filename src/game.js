@@ -2,7 +2,7 @@ import { Game, PlayerView } from 'boardgame.io/core';
 import { Random } from 'boardgame.io/core';
 
 const Drop = Game({
-  name: 'drop2',
+  name: 'drop',
   playerView: PlayerView.STRIP_SECRETS,
 
   setup: (numPlayers) => {
